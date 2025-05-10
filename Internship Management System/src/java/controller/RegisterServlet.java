@@ -35,7 +35,12 @@ public class RegisterServlet extends HttpServlet {
             user.setRole(role);
 
             userDAO.registerUser(user);
-            response.sendRedirect("dashboardStudent.jsp");
+            if ("student".equals(role)){
+                response.sendRedirect("dashboardStudent.jsp");
+            }
+            else if("company".equals(role)){
+                response.sendRedirect("dashboardCompany.jsp");
+            }
         }
         catch (Exception ex){
             request.setAttribute("errorMessage", ex.getMessage());

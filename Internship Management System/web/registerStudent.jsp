@@ -9,7 +9,7 @@
     <body>
         <div class="form-container">
             <h2>User Registration</h2>
-            <form action="registerUser.jsp" method="post">
+            <form action="RegisterServlet" method="post">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
 

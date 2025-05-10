@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 public class DBConnection {
 
     public static Connection getConnection() throws Exception {
-        String jdbcURL = "jdbc:mysql://localhost:3306/projectmanagementdb";
+        String jdbcURL = "jdbc:mysql://localhost:3306/internshipdb";
         String jdbcUsername = "root";
         String jdbcPassword = "";
 
