@@ -26,7 +26,19 @@ public class LoginServlet extends HttpServlet {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            userDAO.logUser(email, password);
+            User user = userDAO.logUser(email, password);
+            
+            if (user == null) {
+                request.setAttribute("errorMessage", "Invalid User Login");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+            else if ("student".equals(user.getRole())){
+                response.sendRedirect("dashboardStudent.jsp");
+            }
+            else if("company".equals(user.getRole())){
+                response.sendRedirect("dashboardCompany.jsp");
+            }
+            
             response.sendRedirect("dashboardStudent.jsp");
         }
         catch (Exception ex){
