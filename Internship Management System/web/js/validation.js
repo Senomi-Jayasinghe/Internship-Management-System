@@ -1,6 +1,11 @@
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
- */
+function validateRegistration() { 
+    let name = document.getElementById("name").value; 
+    let email = document.getElementById("email").value; 
+    if (name === "" || !email.includes("@")) { 
+        alert("Enter valid name and email."); 
+        return false; 
+    } 
+    return true; 
+}
 
 

@@ -39,7 +39,7 @@ public class RegisterServlet extends HttpServlet {
                 response.sendRedirect("dashboardStudent.jsp");
             }
             else if("company".equals(role)){
-                response.sendRedirect("dashboardCompany.jsp");
+                response.sendRedirect("InternshipServlet");
             }
         }
         catch (Exception ex){

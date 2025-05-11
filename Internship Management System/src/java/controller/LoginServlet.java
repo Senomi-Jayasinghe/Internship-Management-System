@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
@@ -25,29 +26,29 @@ public class LoginServlet extends HttpServlet {
         try{
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-
             User user = userDAO.logUser(email, password);
+            HttpSession session = request.getSession();
             
             if (user == null) {
                 request.setAttribute("errorMessage", "Invalid User Login");
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
-            else if ("student".equals(user.getRole())){
+            else if ("Student".equals(user.getRole())){
+                session.setAttribute("user", user);
                 response.sendRedirect("dashboardStudent.jsp");
             }
-            else if("company".equals(user.getRole())){
-                response.sendRedirect("dashboardCompany.jsp");
+            else if("Company".equals(user.getRole())){
+                session.setAttribute("user", user);
+                response.sendRedirect("InternshipServlet");
             }
-            else if("admin".equals(user.getRole())){
+            else if("Admin".equals(user.getRole())){
+                session.setAttribute("user", user);
                 response.sendRedirect("dashboardAdmin.jsp");
-            }
-            
-            response.sendRedirect("dashboardStudent.jsp");
+            }     
         }
         catch (Exception ex){
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
-
 }

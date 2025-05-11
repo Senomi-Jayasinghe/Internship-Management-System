@@ -1,11 +1,14 @@
-body {
+body{
     font-family: 'Segoe UI', sans-serif;
-    background-color: #e6f0ff;
     color: #003366;
+}
+
+.body-form {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #e6f0ff;
 }
 
 .form-container {
@@ -35,7 +38,7 @@ input {
     border-radius: 5px;
 }
 
-button {
+.button-form{
     width: 100%;
     padding: 10px;
     background-color: #0066cc;
@@ -47,5 +50,62 @@ button {
 }
 
 button:hover {
+    background-color: #004d99;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #b3d1ff;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.main-content {
+    max-width: 100%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+.internship-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.internship-table th, .internship-table td {
+    border: 1px solid #b3cce6;
+    padding: 12px;
+    text-align: left;
+}
+
+.internship-table th {
+    background-color: #cce0ff;
+    color: #003366;
+}
+
+.internship-table tr:nth-child(even) {
+    background-color: #f2f7ff;
+}
+
+.internship-table form {
+    margin: 0;
+}
+
+.internship-table button {
+    padding: 8px 14px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.internship-table button:hover {
     background-color: #004d99;
 }

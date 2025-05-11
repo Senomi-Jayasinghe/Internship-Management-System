@@ -1,9 +1,3 @@
-<%-- 
-    Document   : internshipList
-    Created on : May 9, 2025, 9:30:04 AM
-    Author     : admin
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -1,87 +1,80 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
+import dao.InternshipDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.util.List;
+import model.Internship;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 
-/**
- *
- * @author admin
- */
 @WebServlet(name = "InternshipServlet", urlPatterns = {"/InternshipServlet"})
 public class InternshipServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InternshipServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InternshipServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    InternshipDAO internshipDAO = new InternshipDAO();
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            HttpSession session = request.getSession(false);
+            User user = (User) session.getAttribute("user");
+
+            if (user == null) {
+                request.setAttribute("errorMessage", "ACCESS DENIED!");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+
+            if ("Student".equals(user.getRole())) {
+                // Show all internships to students that they have not applied
+                int studentId = user.getId();
+                List<Internship> internships = internshipDAO.getAllInternships(studentId);
+                request.setAttribute("internships", internships);
+                request.getRequestDispatcher("applyInternship.jsp").forward(request, response);
+
+            } else if ("Company".equals(user.getRole())) {
+                // Show only that company's internships
+                int companyId = user.getId();
+                List<Internship> companyInternships = internshipDAO.getInternshipsByCompanyId(companyId);
+                request.setAttribute("internships", companyInternships);
+                request.getRequestDispatcher("dashboardCompany.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "Invalid user role!");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try{
+            String title = request.getParameter("title");
+            String desc = request.getParameter("description");
+            LocalDate deadline = LocalDate.parse(request.getParameter("deadline"));
+            int companyId = Integer.parseInt(request.getParameter("companyId"));
+
+            Internship internship = new Internship();
+            internship.setTitle(title);
+            internship.setDescription(desc);
+            internship.setDeadline(deadline);
+            internship.setCompanyId(companyId);
+
+            internshipDAO.postInternship(internship);
+            response.sendRedirect("dashboardCompany.jsp");
+        }
+        catch(Exception ex){
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -6,7 +6,23 @@
         <title>User Registration</title>
         <link rel="stylesheet" href="css/style.css">
     </head>
-    <body>
+    <style>
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #b3cce6;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: #0066cc;
+            outline: none;
+            background-color: #f0f8ff;
+        }
+    </style>
+    <body class="body-form">
         <div class="form-container">
             <h2>User Registration</h2>
             <form action="RegisterServlet" method="post">
@@ -26,8 +42,14 @@
                     <option value="company">Company</option>
                 </select>
 
-                <button type="submit">Register</button>
+                <button class="button-form" type="submit">Register</button>
             </form>
+            <br>
+            <center>
+                <span>
+                    Already Signed Up? Login <a href="login.jsp">Here</a>
+                </span>
+            </center>
         </div>
     </body>
 </html>
